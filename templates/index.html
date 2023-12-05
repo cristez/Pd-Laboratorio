@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Malaria Prediction</title>
+    <style>
+        /* Tus estilos CSS anteriores aquí */
+        /* ... */
+
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type=file] {
+            margin-bottom: 10px;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+        .image-preview {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            width: 300px;  /* Ajusta según sea necesario */
+            height: 300px; /* Ajusta según sea necesario */
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sube una imagen para detectar Malaria</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" required="required" onchange="previewImage(this)">
+        <input type="submit" value="Comprobar">
+    </form>
+    <div class="image-preview" id="imagePreview">
+        {% if image_data %}
+            <img src="data:image/jpeg;base64,{{ image_data }}" alt="Vista previa de la imagen">
+        {% else %}
+            <img src="" alt="Vista previa de la imagen" style="display: none;">
+        {% endif %}
+    </div>
+    {% if prediction %}
+        <h2>Resultado: {{ prediction }}</h2>
+    {% endif %}
+
+    <script>
+        function previewImage(input) {
+            var preview = document.getElementById('imagePreview');
+            var imgElement = preview.querySelector('img');
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    imgElement.src = e.target.result;
+                    imgElement.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
